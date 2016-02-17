@@ -22,11 +22,8 @@ func TestTCPListener(t *testing.T) {
 	}
 	time.Sleep(1000 * time.Millisecond)
 
-	//response, err := bufio.NewReader(conn).ReadString('\n')
-	var b []byte
-	response, err := bufio.NewReader(conn).Read(b)
-
-	if HealthMessage != string(b) {
+	response, err := bufio.NewReader(conn).ReadString('\n')
+	if HealthMessage != response {
 		t.Errorf("unexpected message received, got %q but wanted %q", response, HealthMessage)
 	}
 
