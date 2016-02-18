@@ -9,7 +9,7 @@ import (
 
 const (
 	// HealthMessage is the string that the TCP listener writes upon connections
-	HealthMessage = `mjolnir/health: bow before me\n`
+	HealthMessage = `mjolnir/health: bow before me#`
 )
 
 // StartTCP starts a health endpoint using the TCP protocol. The host should
@@ -28,7 +28,9 @@ func StartTCP(host string) error {
 		}
 		go func(conn net.Conn) {
 			defer conn.Close()
-			io.Copy(conn, bytes.NewBufferString(HealthMessage))
+			if _, err := io.Copy(conn, bytes.NewBufferString(HealthMessage)); err != nil {
+				fmt.Errorf("mjolnir/health: Could not write message: %q", err)
+			}
 		}(conn)
 	}
 }

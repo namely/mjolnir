@@ -21,8 +21,12 @@ func TestTCPListener(t *testing.T) {
 		t.Errorf("could not dial connection: %v", err)
 	}
 	time.Sleep(1000 * time.Millisecond)
+	defer conn.Close()
 
-	response, err := bufio.NewReader(conn).ReadString('\n')
+	response, err := bufio.NewReader(conn).ReadString('#')
+	if err != nil {
+		t.Errorf("Error Reading from TCP:  %v", err)
+	}
 	if HealthMessage != response {
 		t.Errorf("unexpected message received, got %q but wanted %q", response, HealthMessage)
 	}
