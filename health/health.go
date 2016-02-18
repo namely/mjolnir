@@ -1,13 +1,15 @@
 package health
 
 import (
+	"bytes"
 	"fmt"
+	"io"
 	"net"
 )
 
 const (
 	// HealthMessage is the string that the TCP listener writes upon connections
-	HealthMessage = `mjolnir/health: bow before me`
+	HealthMessage = `mjolnir/health: bow before me#`
 )
 
 // StartTCP starts a health endpoint using the TCP protocol. The host should
@@ -18,21 +20,18 @@ func StartTCP(host string) error {
 		return fmt.Errorf("mjolnir/health: could not create TCP listener: %q", err.Error())
 	}
 
-	fmt.Println("listening?")
-
 	defer l.Close()
 	for {
 		conn, err := l.Accept()
-		fmt.Println("accepted")
 		if err != nil {
 			return fmt.Errorf("mjolnir/health: could not accept connection: %q", err.Error())
 		}
-		defer conn.Close()
-
-		if _, err := conn.Write([]byte(HealthMessage)); err != nil {
-			return fmt.Errorf("mjolnir/health: could not write response: %q", err.Error())
-		}
-		fmt.Println("write")
+		go func(conn net.Conn) {
+			defer conn.Close()
+			if _, err := io.Copy(conn, bytes.NewBufferString(HealthMessage)); err != nil {
+				fmt.Errorf("mjolnir/health: Could not write message: %q", err)
+			}
+		}(conn)
 	}
 }
 

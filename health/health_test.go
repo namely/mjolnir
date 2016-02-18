@@ -1,6 +1,7 @@
 package health
 
 import (
+	"bufio"
 	"net"
 	"testing"
 	"time"
@@ -20,14 +21,14 @@ func TestTCPListener(t *testing.T) {
 		t.Errorf("could not dial connection: %v", err)
 	}
 	time.Sleep(1000 * time.Millisecond)
+	defer conn.Close()
 
-	var buf []byte
-	if _, err := conn.Read(buf); err != nil {
-		t.Errorf("could not read from connection: %v", err)
+	response, err := bufio.NewReader(conn).ReadString('#')
+	if err != nil {
+		t.Errorf("Error Reading from TCP:  %v", err)
 	}
-
-	if exp, got := HealthMessage, string(buf); exp != got {
-		t.Errorf("unexpected message received, got %q but wanted %q", got, exp)
+	if HealthMessage != response {
+		t.Errorf("unexpected message received, got %q but wanted %q", response, HealthMessage)
 	}
 
 	if tcpErr != nil {
