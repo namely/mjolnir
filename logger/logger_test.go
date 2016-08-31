@@ -17,12 +17,12 @@ var testEntry2 = logrus.WithFields(logrus.Fields{
 })
 
 func TestFromContext(t *testing.T) {
-	t.Run("given a context with no entry, it returns a entry", func(t *testing.T) {
+	t.Run("given a context with no entry, it returns an entry", func(t *testing.T) {
 		result := FromContext(ctx0)
 		assert.IsType(t, &logrus.Entry{}, result)
 	})
 
-	t.Run("given a context with a entry, it returns that entry", func(t *testing.T) {
+	t.Run("given a context with an entry, it returns that entry", func(t *testing.T) {
 		ctx1 := context.WithValue(ctx0, Key, testEntry1)
 		ctx2 := FromContext(ctx1)
 		assert.Equal(t, testEntry1, ctx2)
