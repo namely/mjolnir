@@ -33,32 +33,26 @@ func TestSetEntry(t *testing.T) {
 	t.Run("it returns a new context with the given entry...", func(t *testing.T) {
 		tcs := []struct {
 			scenario string
-			oldE     *logrus.Entry
+			oldCtx   context.Context
 		}{
 			{
 				"given a context with no entry",
-				nil,
+				ctx0,
 			},
 			{
 				"given a context with the same entry",
-				testEntry1,
+				context.WithValue(ctx0, Key, testEntry1),
 			},
 			{
 				"given a context with a different entry",
-				testEntry2,
+				context.WithValue(ctx0, Key, testEntry2),
 			},
 		}
 		for _, tc := range tcs {
 			t.Run(tc.scenario, func(t *testing.T) {
-				var ctx1 context.Context
-				if tc.oldE != nil {
-					ctx1 = context.WithValue(ctx0, Key, tc.oldE)
-				} else {
-					ctx1 = ctx0
-				}
-				ctx2 := SetEntry(ctx1, testEntry1)
-				assert.NotEqual(t, ctx1, ctx2)
-				l := ctx2.Value(Key)
+				ctx1 := SetEntry(tc.oldCtx, testEntry1)
+				assert.NotEqual(t, tc.oldCtx, ctx1)
+				l := ctx1.Value(Key)
 				assert.NotNil(t, l)
 				assert.IsType(t, &logrus.Entry{}, l)
 				assert.Equal(t, testEntry1, l.(*logrus.Entry))
