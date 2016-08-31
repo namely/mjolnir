@@ -52,7 +52,7 @@ func TestSetEntry(t *testing.T) {
 
 	t.Run("given a context with a entry, and a different entry, it returns a new context with the new entry", func(t *testing.T) {
 		ctx1 := context.WithValue(ctx0, Key, L1)
-		ctx2 := SetEntry(ctx0, L2)
+		ctx2 := SetEntry(ctx1, L2)
 		assert.NotEqual(t, ctx1, ctx2)
 		l := ctx2.Value(Key)
 		assert.NotNil(t, l)
