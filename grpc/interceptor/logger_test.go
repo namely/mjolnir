@@ -5,9 +5,10 @@ import (
 	"encoding/json"
 	"testing"
 
-	"google.golang.org/grpc"
+	"github.com/namely/mjolnir/logger"
 
 	"golang.org/x/net/context"
+	"google.golang.org/grpc"
 
 	"github.com/Sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
@@ -34,7 +35,8 @@ func TestLoggerInterceptor(t *testing.T) {
 	ctx := context.TODO()
 	info := &grpc.UnaryServerInfo{FullMethod: "/package.service/method"}
 	final := func(ctx context.Context, in interface{}) (interface{}, error) {
-		l.Info("from handler")
+		e := logger.FromContext(ctx)
+		e.Info("from handler")
 		return nil, nil
 	}
 
@@ -44,12 +46,16 @@ func TestLoggerInterceptor(t *testing.T) {
 	var firstLine logLine
 	require.NoError(t, decoder.Decode(&firstLine))
 	assert.Equal(t, "processing rpc", firstLine.Msg)
+	assert.NotEmpty(t, firstLine.RequestID)
 
 	var secondLine logLine
 	require.NoError(t, decoder.Decode(&secondLine))
 	assert.Equal(t, "from handler", secondLine.Msg)
+	assert.NotEmpty(t, secondLine.RequestID)
 
 	var thirdLine logLine
 	require.NoError(t, decoder.Decode(&thirdLine))
 	assert.Equal(t, "finished rpc", thirdLine.Msg)
+	assert.NotEmpty(t, thirdLine.RequestID)
+	assert.NotEmpty(t, thirdLine.Duration)
 }
