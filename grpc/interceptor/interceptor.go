@@ -1,30 +1,26 @@
 package interceptor
 
 import (
-	"time"
-
 	"golang.org/x/net/context"
 
 	"github.com/Sirupsen/logrus"
-	"github.com/namely/mjolnir/logger"
-	uuid "github.com/satori/go.uuid"
 	"google.golang.org/grpc"
 )
 
 // Interceptor makes it easy to return unary interceptors for grpc servers
 type Interceptor struct {
 	logger *logrus.Logger
+	chain  []grpc.UnaryServerInterceptor
 }
 
 // New initializes and returns an Interceptor
-func New(logger *logrus.Logger) *Interceptor {
-	return &Interceptor{logger: logger}
+func New() *Interceptor {
+	return &Interceptor{}
 }
 
-func (i *Interceptor) addLoggerToContext(ctx context.Context) context.Context {
-	entry := i.logger.WithField("request_id", uuid.NewV4().String())
-
-	return logger.SetEntry(ctx, entry)
+// Use adds a middleware to the chain for the server interceptor
+func (i *Interceptor) Use(m grpc.UnaryServerInterceptor) {
+	i.chain = append(i.chain, m)
 }
 
 // Middleware returns a grpc.UnaryServerHandler compatible function
@@ -33,26 +29,21 @@ func (i *Interceptor) addLoggerToContext(ctx context.Context) context.Context {
 //
 // A grpc endpoint should return generic errors such as "company not found" by wrapping
 // the original error.
+// This chaining logic shamelessly stolen from https://github.com/mwitkow/go-grpc-middleware/blob/master/chain.go
 func (i *Interceptor) Middleware() grpc.UnaryServerInterceptor {
 	return func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
-		ctx = i.addLoggerToContext(ctx)
-		entry := logger.FromContext(ctx)
-		name := info.FullMethod
-
-		entry.WithField("endpoint", name).Info("processing rpc")
-
-		start := time.Now()
-		out, err := handler(ctx, req)
-		if err != nil {
-			entry.WithError(err).Error("rpc endpoint failed")
-			return nil, err
+		buildChain := func(current grpc.UnaryServerInterceptor, next grpc.UnaryHandler) grpc.UnaryHandler {
+			return func(currentCtx context.Context, currentReq interface{}) (interface{}, error) {
+				return current(currentCtx, currentReq, info, next)
+			}
 		}
 
-		entry.WithFields(logrus.Fields{
-			"endpoint": name,
-			"duration": time.Since(start).String(),
-		}).Info("finished rpc")
+		chain := handler
 
-		return out, err
+		for ii := len(i.chain) - 1; ii >= 0; ii-- {
+			chain = buildChain(i.chain[ii], chain)
+		}
+
+		return chain(ctx, req)
 	}
 }
