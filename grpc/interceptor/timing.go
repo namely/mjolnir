@@ -49,7 +49,7 @@ func Timer(prefix string, c StatsdClient) grpc.UnaryServerInterceptor {
 		key := prefix + "." + groups[1]
 		c.Incr(key, nil, 1)
 		start := time.Now()
-		defer c.Timing(key+".duration", time.Since(start), nil, 0)
+		defer c.Timing(key+".duration", time.Since(start), nil, 1)
 		return handler(ctx, req)
 	}
 }
