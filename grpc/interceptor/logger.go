@@ -27,7 +27,7 @@ func Logger(l *logrus.Logger) grpc.UnaryServerInterceptor {
 		out, err := handler(ctx, req)
 		if err != nil {
 			entry.WithError(err).WithField(
-				"duration", time.Since(start).String()
+				"duration", time.Since(start).String(),
 			).Error("rpc endpoint failed")
 			return nil, err
 		}
