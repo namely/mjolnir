@@ -5,7 +5,6 @@ import (
 
 	"golang.org/x/net/context"
 
-	"../../data"
 	"github.com/Sirupsen/logrus"
 	"github.com/namely/mjolnir/logger"
 	uuid "github.com/satori/go.uuid"
@@ -31,7 +30,7 @@ func Logger(l *logrus.Logger) grpc.UnaryServerInterceptor {
 		start := time.Now()
 		out, err := handler(ctx, req)
 		if err != nil {
-			if ferr, ok := err.(data.ErrorFielder); ok {
+			if ferr, ok := err.(ErrorFielder); ok {
 				fields := ferr.Fields()
 				entry.WithError(ferr).WithFields(*fields).WithField(
 					"duration", time.Since(start).String(),
@@ -41,7 +40,7 @@ func Logger(l *logrus.Logger) grpc.UnaryServerInterceptor {
 					"duration", time.Since(start).String(),
 				).Error("rpc endpoint " + name + " failed")
 			}
-			return nil, data.ErrGrpcInternalError
+			return nil, ErrGrpcInternalError
 		}
 
 		entry.WithFields(logrus.Fields{

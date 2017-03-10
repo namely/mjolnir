@@ -1,4 +1,4 @@
-package data
+package interceptor
 
 import (
 	"github.com/Sirupsen/logrus"
@@ -62,5 +62,5 @@ func (e *KeyedErr) Key() string {
 	return e.ErrorKey
 }
 
-// ErrGrpcInternalError indicates an accounts internal server error
+// ErrGrpcInternalError indicates an internal server error
 var ErrGrpcInternalError = grpc.Errorf(codes.Unknown, "internal server error")
