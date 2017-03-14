@@ -9,11 +9,6 @@ import (
 	"golang.org/x/net/context"
 	"regexp"
 )
-const (
-	// regex to format grpc call logs
-	// "/service.Service/Endpt" -> "Endpt"
-	FormatServiceEndpoint = regexp.MustCompile(`\/([A-Za-z])\w+\.([A-Za-z])\w+\/`)
-)
 
 var (
 	// Key is used for contexts to retrieve and store loggers
@@ -26,6 +21,10 @@ var (
 	// LogWriter is where the logs go. By default this empty buffer blackholes
 	// logs. It must be an io.Writer such as os.Stdout
 	Writer io.Writer = ioutil.Discard
+	
+	// regex to format grpc call logs
+	// "/service.Service/Endpt" -> "Endpt"
+	FormatServiceEndpoint = regexp.MustCompile(`\/([A-Za-z])\w+\.([A-Za-z])\w+\/`)
 )
 
 // FromContext takes a context and returns a pointer to a logrus.Entry
