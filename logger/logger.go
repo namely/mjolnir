@@ -21,7 +21,7 @@ var (
 	// LogWriter is where the logs go. By default this empty buffer blackholes
 	// logs. It must be an io.Writer such as os.Stdout
 	Writer io.Writer = ioutil.Discard
-	
+
 	// regex to format grpc call logs
 	// "/service.Service/Endpt" -> "Endpt"
 	FormatServiceEndpoint = regexp.MustCompile(`\/([A-Za-z])\w+\.([A-Za-z])\w+\/`)
