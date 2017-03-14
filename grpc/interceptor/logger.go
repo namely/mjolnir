@@ -9,7 +9,6 @@ import (
 	"github.com/namely/mjolnir/logger"
 	uuid "github.com/satori/go.uuid"
 	"google.golang.org/grpc"
-	"regexp"
 )
 
 // Logger returns an interceptor that will set on the context a *logrus.Entry
@@ -22,8 +21,7 @@ func Logger(l *logrus.Logger) grpc.UnaryServerInterceptor {
 		entry := logger.FromContext(ctx)
 
 		// regex to change /service.Service/Endpt -> Endpt
-		r := regexp.MustCompile(`\/([A-Za-z])\w+\.([A-Za-z])\w+\/`)
-		name := r.ReplaceAllString(info.FullMethod, "")
+		name := logger.FormatServiceEndpoint.ReplaceAllString(info.FullMethod, "")
 
 		entry.WithField("endpoint", name).Info("processing rpc")
 
