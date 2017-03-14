@@ -7,6 +7,12 @@ import (
 
 	"github.com/Sirupsen/logrus"
 	"golang.org/x/net/context"
+	"regexp"
+)
+const (
+	// regex to format grpc call logs
+	// "/service.Service/Endpt" -> "Endpt"
+	FormatServiceEndpoint = regexp.MustCompile(`\/([A-Za-z])\w+\.([A-Za-z])\w+\/`)
 )
 
 var (
