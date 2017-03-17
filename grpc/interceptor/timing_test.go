@@ -3,21 +3,44 @@ package interceptor
 import (
 	"testing"
 
-	"github.com/stretchr/testify/mock"
-
 	"golang.org/x/net/context"
 
+	"github.com/armon/go-metrics"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 	"google.golang.org/grpc"
 )
 
+// MockSink is stolen from https://github.com/armon/go-metrics/blob/3df31a1ada83e310c2e24b267c8e8b68836547b4/sink_test.go#L8
+type MockSink struct {
+	keys [][]string
+	vals []float32
+}
+
+func (m *MockSink) SetGauge(key []string, val float32) {
+	m.keys = append(m.keys, key)
+	m.vals = append(m.vals, val)
+}
+func (m *MockSink) EmitKey(key []string, val float32) {
+	m.keys = append(m.keys, key)
+	m.vals = append(m.vals, val)
+}
+func (m *MockSink) IncrCounter(key []string, val float32) {
+	m.keys = append(m.keys, key)
+	m.vals = append(m.vals, val)
+}
+func (m *MockSink) AddSample(key []string, val float32) {
+	m.keys = append(m.keys, key)
+	m.vals = append(m.vals, val)
+}
+
 func TestTimingInterceptor(t *testing.T) {
 	i := New()
-	stats := &MockStatsdClient{}
+	sink := &MockSink{}
+	stats, err := metrics.New(metrics.DefaultConfig("timing-test"), sink)
+	require.NoError(t, err)
 
-	stats.On("Incr", "test.SuperDopeRPCMethod", []string(nil), float64(1)).Return(nil)
-	stats.On("Timing", "test.SuperDopeRPCMethod.duration", mock.AnythingOfType("time.Duration"), []string(nil), float64(0)).Return(nil)
-
-	i.Use(Timer("test", stats))
+	i.Use(Timer(stats))
 	middleware := i.Middleware()
 	ctx := context.TODO()
 	info := &grpc.UnaryServerInfo{FullMethod: "/package.Service/SuperDopeRPCMethod"}
@@ -27,5 +50,9 @@ func TestTimingInterceptor(t *testing.T) {
 
 	middleware(ctx, nil, info, final)
 
-	stats.AssertExpectations(t)
+	assert.Equal(t, "timing-test", sink.keys[0][0])
+	assert.Equal(t, "SuperDopeRPCMethod", sink.keys[0][1])
+
+	assert.Equal(t, "timing-test", sink.keys[1][0])
+	assert.Equal(t, "SuperDopeRPCMethod", sink.keys[1][1])
 }
