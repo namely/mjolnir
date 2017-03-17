@@ -36,6 +36,7 @@ func Timer(m *metrics.Metrics) grpc.UnaryServerInterceptor {
 		m.IncrCounter(key, 1)
 		start := time.Now()
 		defer m.MeasureSince(key, start)
+    
 		return handler(ctx, req)
 	}
 }
