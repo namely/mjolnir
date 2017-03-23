@@ -1,6 +1,7 @@
 # Mjolnir
 
 [![Build Status](https://travis-ci.org/namely/mjolnir.svg?branch=master)](https://travis-ci.org/namely/mjolnir)
+[![Go Report Card](https://goreportcard.com/badge/namely/mjolnir)](https://goreportcard.com/report/namely/mjolnir)
 
 Mjolnir is Namely's common Go packages. It contains packages for things like health checks, database utils, logging, etc.
 
