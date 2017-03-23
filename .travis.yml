@@ -1,0 +1,19 @@
+language: go
+
+go:
+  - 1.7.x
+
+before_install:
+  - go get golang.org/x/net/context
+  - go get github.com/Sirupsen/logrus
+  - go get google.golang.org/grpc
+  - go get github.com/stretchr/testify/mock
+  - go get github.com/davecgh/go-spew/spew
+  -	go get github.com/pmezard/go-difflib/difflib
+  -	go get github.com/stretchr/objx
+  -	go get github.com/stretchr/testify/assert
+  - go get github.com/stretchr/testify/require
+  - go get github.com/satori/go.uuid
+
+script:
+  - go test -v ./...
