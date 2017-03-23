@@ -1,7 +1,9 @@
 # Mjolnir
+====
 
-Mjolnir is Namely's common Go packages. It contains packages for things like
-health checks, database utils, logging, etc.
+[![Build Status](https://travis-ci.org/namely/mjolnir.svg?branch=master)](https://travis-ci.org/namely/mjolnir)
+
+Mjolnir is Namely's common Go packages. It contains packages for things like health checks, database utils, logging, etc.
 
 ### Logging
 
@@ -49,4 +51,3 @@ When building gRPC Services, sometimes you may want return user friendly protobu
             "error":  err,
         },
     )
-    
