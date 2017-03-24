@@ -1,19 +1,19 @@
 language: go
-
 go:
-  - 1.7.x
-
+- 1.7.x
 before_install:
-  - go get golang.org/x/net/context
-  - go get github.com/Sirupsen/logrus
-  - go get google.golang.org/grpc
-  - go get github.com/stretchr/testify/mock
-  - go get github.com/davecgh/go-spew/spew
-  - go get github.com/pmezard/go-difflib/difflib
-  - go get github.com/stretchr/objx
-  - go get github.com/stretchr/testify/assert
-  - go get github.com/stretchr/testify/require
-  - go get github.com/satori/go.uuid
-
+- go get golang.org/x/net/context
+- go get github.com/Sirupsen/logrus
+- go get google.golang.org/grpc
+- go get github.com/stretchr/testify/mock
+- go get github.com/davecgh/go-spew/spew
+- go get github.com/pmezard/go-difflib/difflib
+- go get github.com/stretchr/objx
+- go get github.com/stretchr/testify/assert
+- go get github.com/stretchr/testify/require
+- go get github.com/satori/go.uuid
 script:
-  - go test -v ./...
+- go test -v ./...
+notifications:
+  slack:
+    secure: NMyvwkeUxKJiJoTE2SDt/AIrPSrdsCkrn1jX7qdblJNELk4SZ03VFQ6Psq/F7E6Mch9xjjVBA3J4wB1nT2tFAspa12/J5Knafp4KWvbWv/JoiWNQ2Yte6ehhc/02n3IIgp3wUwXXY8a/TN2e9tBgIMGaLKpXjgO8SCPsyP8DOSQt8IiK7mBqHA9o5S0RgiWRuvTcZKHRcARcJIoL1KS8dGiHrhKGh4knfHX3RS4eHWPt1r0yEwQqmzesRzWRecOGX+lzMH2erSPppjThH5qFmY9cY8Jf2VNB5Nj68V4TfYyvEyngvi5Xp4mxH5TXX75gOYPMfQj1c0j5XsL1ionMuAo9w2usU7sY3bLG/6FHom486iAu3P+vcCSrq6xsialJKxOvG7aL6hMPEjcr5gcQNW8NsNwxPpOCLUNBpGDDOlKvHiEvO+lgMfzpqJo2e5P1T/hVD9kOqriul1fpNWqSsEm1POCQJ8v7k8tS8G02+YYfk68IthNMok7zvVa8nNefXQevYXPqNUNwSaCxyFIa6Yh8pksX5ES+1ywVqtYu2um7J40vwp+ZBbQVQRU05W3wG4/Phb99l3i6kGI6ygQAtGeK2e40plvVdMYZj2Tu8cGHfG0cQjTJ2u9otwJU+TeAnf3J8TCwEGmjxcnnCHbHgoV3BbnNuj/CIsrPxerB4KQ=
