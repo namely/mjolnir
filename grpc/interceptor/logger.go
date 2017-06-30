@@ -31,11 +31,11 @@ func Logger(l *logrus.Logger) grpc.UnaryServerInterceptor {
 			if ferr, ok := err.(ErrorFielder); ok {
 				fields := ferr.Fields()
 				entry.WithError(ferr).WithFields(*fields).WithField(
-					"duration", int64(time.Since(start)) / int64(time.Millisecond),
+					"duration", float64(time.Since(start)) / float64(time.Millisecond),
 				).Error("rpc endpoint " + name + " failed")
 			} else {
 				entry.WithError(err).WithField(
-					"duration", int64(time.Since(start)) / int64(time.Millisecond),
+					"duration", float64(time.Since(start)) / float64(time.Millisecond),
 				).Error("rpc endpoint " + name + " failed")
 			}
 			return nil, ErrGrpcInternalError
@@ -44,7 +44,7 @@ func Logger(l *logrus.Logger) grpc.UnaryServerInterceptor {
 		entry.WithFields(logrus.Fields{
 			"endpoint":    name,
 			"pb_response": out,
-			"duration":    int64(time.Since(start)) / int64(time.Millisecond),
+			"duration":    float64(time.Since(start)) / float64(time.Millisecond),
 		}).Info("finished rpc")
 
 		return out, err
