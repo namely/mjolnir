@@ -18,9 +18,9 @@ import (
 // LogLine is only used to parse log lines from interceptors making it
 // easier to test
 type logLine struct {
-	Msg       string `json:"msg"`
-	RequestID string `json:"request_id"`
-	Duration  string `json:"duration"`
+	Msg       string      `json:"msg"`
+	RequestID string      `json:"request_id"`
+	Duration  json.Number `json:"duration,Number"`
 }
 
 func TestLoggerInterceptor(t *testing.T) {
