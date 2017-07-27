@@ -5,7 +5,7 @@ import (
 
 	"golang.org/x/net/context"
 
-	"github.com/Sirupsen/logrus"
+	"github.com/sirupsen/logrus"
 	"github.com/namely/mjolnir/logger"
 	uuid "github.com/satori/go.uuid"
 	"google.golang.org/grpc"
