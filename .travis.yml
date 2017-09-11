@@ -1,6 +1,6 @@
 language: go
 go:
-- 1.7.x
+- 1.8.x
 before_install:
 - go get golang.org/x/net/context
 - go get github.com/sirupsen/logrus
