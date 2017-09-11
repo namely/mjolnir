@@ -47,6 +47,7 @@ func (m *MockSink) AddSampleWithLabels(key []string, val float32, labels []metri
 	m.vals = append(m.vals, val)
 	m.labels = append(m.labels, labels)
 }
+
 func TestTimingInterceptor(t *testing.T) {
 	i := New()
 	sink := &MockSink{}

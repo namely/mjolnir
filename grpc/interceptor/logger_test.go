@@ -20,7 +20,7 @@ import (
 type logLine struct {
 	Msg       string      `json:"msg"`
 	RequestID string      `json:"request_id"`
-	Duration  json.Number `json:"duration,Number"`
+	Duration  json.Number `json:"core.duration,Number"`
 }
 
 func TestLoggerInterceptor(t *testing.T) {
