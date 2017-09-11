@@ -11,29 +11,42 @@ import (
 	"google.golang.org/grpc"
 )
 
-// MockSink is stolen from https://github.com/armon/go-metrics/blob/3df31a1ada83e310c2e24b267c8e8b68836547b4/sink_test.go#L8
+// MockSink is stolen from https://github.com/armon/go-metrics/blob/master/sink_test.go#L9
 type MockSink struct {
-	keys [][]string
-	vals []float32
+	keys   [][]string
+	vals   []float32
+	labels [][]metrics.Label
 }
 
 func (m *MockSink) SetGauge(key []string, val float32) {
+	m.SetGaugeWithLabels(key, val, nil)
+}
+func (m *MockSink) SetGaugeWithLabels(key []string, val float32, labels []metrics.Label) {
 	m.keys = append(m.keys, key)
 	m.vals = append(m.vals, val)
+	m.labels = append(m.labels, labels)
 }
 func (m *MockSink) EmitKey(key []string, val float32) {
 	m.keys = append(m.keys, key)
 	m.vals = append(m.vals, val)
+	m.labels = append(m.labels, nil)
 }
 func (m *MockSink) IncrCounter(key []string, val float32) {
+	m.IncrCounterWithLabels(key, val, nil)
+}
+func (m *MockSink) IncrCounterWithLabels(key []string, val float32, labels []metrics.Label) {
 	m.keys = append(m.keys, key)
 	m.vals = append(m.vals, val)
+	m.labels = append(m.labels, labels)
 }
 func (m *MockSink) AddSample(key []string, val float32) {
+	m.AddSampleWithLabels(key, val, nil)
+}
+func (m *MockSink) AddSampleWithLabels(key []string, val float32, labels []metrics.Label) {
 	m.keys = append(m.keys, key)
 	m.vals = append(m.vals, val)
+	m.labels = append(m.labels, labels)
 }
-
 func TestTimingInterceptor(t *testing.T) {
 	i := New()
 	sink := &MockSink{}
