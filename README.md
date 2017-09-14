@@ -1,3 +1,5 @@
+testing slack integration don't commit
+
 # Mjolnir
 
 [![Build Status](https://travis-ci.org/namely/mjolnir.svg?branch=master)](https://travis-ci.org/namely/mjolnir)
