@@ -33,12 +33,13 @@ func Logger(l *logrus.Logger) grpc.UnaryServerInterceptor {
 				entry.WithError(ferr).WithFields(*fields).WithField(
 					"core.duration", float64(time.Since(start)) / float64(time.Millisecond),
 				).Error("rpc endpoint " + name + " failed")
+				return nil, ErrGrpcInternalError
 			} else {
 				entry.WithError(err).WithField(
 					"core.duration", float64(time.Since(start)) / float64(time.Millisecond),
 				).Error("rpc endpoint " + name + " failed")
+				return nil, err
 			}
-			return nil, ErrGrpcInternalError
 		}
 
 		entry.WithFields(logrus.Fields{
