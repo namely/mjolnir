@@ -43,9 +43,8 @@ func Logger(l *logrus.Logger) grpc.UnaryServerInterceptor {
 		}
 
 		entry.WithFields(logrus.Fields{
-			"endpoint":    name,
-			"pb_response": out,
-			"core.duration":    float64(time.Since(start)) / float64(time.Millisecond),
+			"endpoint":      name,
+			"core.duration": float64(time.Since(start)) / float64(time.Millisecond),
 		}).Info("finished rpc")
 
 		return out, err
