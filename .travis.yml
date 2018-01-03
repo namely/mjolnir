@@ -2,8 +2,7 @@ language: go
 go:
 - 1.8.x
 before_install:
-- go get ./...
-- govendor sync
+- govendor fetch
 script:
 - go test -v ./...
 notifications:
