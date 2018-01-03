@@ -5,9 +5,9 @@ import (
 
 	"golang.org/x/net/context"
 
-	"github.com/sirupsen/logrus"
 	"github.com/namely/mjolnir/logger"
 	uuid "github.com/satori/go.uuid"
+	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 )
 
@@ -17,13 +17,11 @@ import (
 // the call as well.
 func Logger(l *logrus.Logger) grpc.UnaryServerInterceptor {
 	return func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
-		ctx = addLoggerToContext(l, ctx)
+		ctx = addLoggerToContext(ctx, l)
 		entry := logger.FromContext(ctx)
 
 		// regex to change /service.Service/Endpt -> Endpt
 		name := logger.FormatServiceEndpoint.ReplaceAllString(info.FullMethod, "")
-
-		entry.WithField("endpoint", name).Info("processing rpc")
 
 		start := time.Now()
 		out, err := handler(ctx, req)
@@ -31,13 +29,13 @@ func Logger(l *logrus.Logger) grpc.UnaryServerInterceptor {
 			if ferr, ok := err.(ErrorFielder); ok {
 				fields := ferr.Fields()
 				entry.WithError(ferr).WithFields(*fields).WithField(
-					"core.duration", float64(time.Since(start)) / float64(time.Millisecond),
+					"core.duration", float64(time.Since(start))/float64(time.Millisecond),
 				).Error("rpc endpoint " + name + " failed")
 				return nil, ErrGrpcInternalError
 			}
 
 			entry.WithError(err).WithField(
-				"core.duration", float64(time.Since(start)) / float64(time.Millisecond),
+				"core.duration", float64(time.Since(start))/float64(time.Millisecond),
 			).Error("rpc endpoint " + name + " failed")
 			return nil, err
 		}
@@ -51,7 +49,7 @@ func Logger(l *logrus.Logger) grpc.UnaryServerInterceptor {
 	}
 }
 
-func addLoggerToContext(l *logrus.Logger, ctx context.Context) context.Context {
+func addLoggerToContext(ctx context.Context, l *logrus.Logger) context.Context {
 	entry := l.WithField("request_id", uuid.NewV4().String())
 	return logger.SetEntry(ctx, entry)
 }
