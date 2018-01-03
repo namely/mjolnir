@@ -50,6 +50,11 @@ func Logger(l *logrus.Logger) grpc.UnaryServerInterceptor {
 }
 
 func addLoggerToContext(ctx context.Context, l *logrus.Logger) context.Context {
-	entry := l.WithField("request_id", uuid.NewV4().String())
+	id, err := uuid.NewV4()
+	if err != nil {
+		logrus.WithError(err).Fatal("could not generate request id")
+	}
+
+	entry := l.WithField("request_id", id.String())
 	return logger.SetEntry(ctx, entry)
 }
