@@ -43,19 +43,15 @@ func TestLoggerInterceptor(t *testing.T) {
 	middleware(ctx, nil, info, final)
 
 	decoder := json.NewDecoder(buf)
+
 	var firstLine logLine
 	require.NoError(t, decoder.Decode(&firstLine))
-	assert.Equal(t, "processing rpc", firstLine.Msg)
+	assert.Equal(t, "from handler", firstLine.Msg)
 	assert.NotEmpty(t, firstLine.RequestID)
 
 	var secondLine logLine
 	require.NoError(t, decoder.Decode(&secondLine))
-	assert.Equal(t, "from handler", secondLine.Msg)
+	assert.Equal(t, "finished rpc", secondLine.Msg)
 	assert.NotEmpty(t, secondLine.RequestID)
-
-	var thirdLine logLine
-	require.NoError(t, decoder.Decode(&thirdLine))
-	assert.Equal(t, "finished rpc", thirdLine.Msg)
-	assert.NotEmpty(t, thirdLine.RequestID)
-	assert.NotEmpty(t, thirdLine.Duration)
+	assert.NotEmpty(t, secondLine.Duration)
 }
