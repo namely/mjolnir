@@ -13,8 +13,6 @@ import (
 
 // Logger returns an interceptor that will set on the context a *logrus.Entry
 // that will automatically be tagged with the request_id UUIDv4.
-// It will log the start and end of the request including the duration of
-// the call as well.
 func Logger(l *logrus.Logger) grpc.UnaryServerInterceptor {
 	return func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
 		ctx = addLoggerToContext(ctx, l)
@@ -39,11 +37,6 @@ func Logger(l *logrus.Logger) grpc.UnaryServerInterceptor {
 			).Error("rpc endpoint " + name + " failed")
 			return nil, err
 		}
-
-		entry.WithFields(logrus.Fields{
-			"endpoint":      name,
-			"core.duration": float64(time.Since(start)) / float64(time.Millisecond),
-		}).Info("finished rpc")
 
 		return out, err
 	}
