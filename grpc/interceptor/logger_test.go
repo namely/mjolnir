@@ -48,10 +48,4 @@ func TestLoggerInterceptor(t *testing.T) {
 	require.NoError(t, decoder.Decode(&firstLine))
 	assert.Equal(t, "from handler", firstLine.Msg)
 	assert.NotEmpty(t, firstLine.RequestID)
-
-	var secondLine logLine
-	require.NoError(t, decoder.Decode(&secondLine))
-	assert.Equal(t, "finished rpc", secondLine.Msg)
-	assert.NotEmpty(t, secondLine.RequestID)
-	assert.NotEmpty(t, secondLine.Duration)
 }
