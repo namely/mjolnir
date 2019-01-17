@@ -5,8 +5,8 @@ import (
 
 	"golang.org/x/net/context"
 
+	uuid "github.com/gofrs/uuid"
 	"github.com/namely/mjolnir/logger"
-	uuid "github.com/satori/go.uuid"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 )
