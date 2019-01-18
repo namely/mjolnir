@@ -3,7 +3,6 @@ go:
 - 1.8.x
 before_install:
 - go get -u github.com/kardianos/govendor
-- go get ./...
 - govendor sync
 script:
 - go test -v ./...
