@@ -3,11 +3,10 @@ package interceptor
 import (
 	"time"
 
-	"golang.org/x/net/context"
-
+	uuid "github.com/gofrs/uuid"
 	"github.com/namely/mjolnir/logger"
-	uuid "github.com/satori/go.uuid"
 	"github.com/sirupsen/logrus"
+	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 )
 

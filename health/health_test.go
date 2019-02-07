@@ -16,6 +16,9 @@ func TestTCPListener(t *testing.T) {
 		t.Logf("Hello world")
 	}()
 
+	// wait 100 ms to wait for TCP listener to get ready
+	time.Sleep(100 * time.Millisecond)
+
 	conn, err := net.DialTimeout("tcp", host, 100*time.Millisecond)
 	if err != nil {
 		t.Errorf("could not dial connection: %v", err)
