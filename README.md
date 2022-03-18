@@ -2,7 +2,6 @@
  
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/30f14d8bd9864619bf404699d92682f3)](https://app.codacy.com/gh/namely/mjolnir/dashboard)
 [![Codacy Badge](https://app.codacy.com/project/badge/Coverage/30f14d8bd9864619bf404699d92682f3)](https://app.codacy.com/gh/namely/mjolnir/dashboard)
-
 [![Build Status](https://travis-ci.org/namely/mjolnir.svg?branch=master)](https://travis-ci.org/namely/mjolnir)
 [![Go Report Card](https://goreportcard.com/badge/namely/mjolnir)](https://goreportcard.com/report/namely/mjolnir)
 
