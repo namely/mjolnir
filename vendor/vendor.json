@@ -52,16 +52,26 @@
 			"revisionTime": "2017-11-13T18:07:20Z"
 		},
 		{
-			"checksumSHA1": "Cas2nprG6pWzf05A2F/OlnjUu2Y=",
+			"checksumSHA1": "FcZxBMV1HDpmlVe84kowjP2YmDk=",
 			"path": "github.com/hashicorp/go-immutable-radix",
-			"revision": "8aac2701530899b64bdea735a1de8da899815220",
-			"revisionTime": "2017-07-25T22:12:15Z"
+			"revision": "04269c5ccbb6793211158fece0bb85ad396f598a",
+			"revisionTime": "2022-12-16T16:59:15Z"
+		},
+		{
+			"checksumSHA1": "QsIrc+x3+75aYmyxaMCbY3dujKQ=",
+			"path": "github.com/hashicorp/go-metrics",
+			"revision": "25a7551ebad13c1db895cac86c3143e159ae0c47",
+			"revisionTime": "2023-06-09T09:17:46Z"
 		},
 		{
 			"checksumSHA1": "9hffs0bAIU6CquiRhKQdzjHnKt0=",
 			"path": "github.com/hashicorp/golang-lru/simplelru",
 			"revision": "0a025b7e63adc15a622f29b0b2c4c3848243bbf6",
 			"revisionTime": "2016-08-13T22:13:03Z"
+		},
+		{
+			"path": "github.com/hashicorp/golang-lru/v2/simplelru",
+			"revision": ""
 		},
 		{
 			"path": "github.com/namely/mjolnir/grpc/interceptor",

@@ -7,7 +7,7 @@ import (
 
 	"golang.org/x/net/context"
 
-	"github.com/armon/go-metrics"
+	"github.com/hashicorp/go-metrics"
 	"google.golang.org/grpc"
 )
 
@@ -36,7 +36,7 @@ func Timer(m *metrics.Metrics) grpc.UnaryServerInterceptor {
 		m.IncrCounter(key, 1)
 		start := time.Now()
 		defer m.MeasureSince(key, start)
-    
+
 		return handler(ctx, req)
 	}
 }

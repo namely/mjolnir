@@ -5,13 +5,13 @@ import (
 
 	"golang.org/x/net/context"
 
-	"github.com/armon/go-metrics"
+	"github.com/hashicorp/go-metrics"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"google.golang.org/grpc"
 )
 
-// MockSink is stolen from https://github.com/armon/go-metrics/blob/master/sink_test.go#L9
+// MockSink is stolen from https://github.com/hashicorp/go-metrics/blob/master/sink_test.go#L9
 type MockSink struct {
 	keys   [][]string
 	vals   []float32
